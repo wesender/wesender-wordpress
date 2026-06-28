@@ -74,7 +74,7 @@ class Wesender_Admin {
 		}
 
 		if ( ! check_admin_referer( 'wesender_connect' ) ) {
-			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-wp' ) );
+			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-e-mail' ) );
 		}
 
 		$state = wp_generate_password( 32, false );
@@ -133,7 +133,7 @@ class Wesender_Admin {
 		}
 
 		if ( ! check_admin_referer( 'wesender_disconnect' ) ) {
-			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-wp' ) );
+			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-e-mail' ) );
 		}
 
 		delete_option( 'wesender_api_key' );
@@ -157,7 +157,7 @@ class Wesender_Admin {
 		}
 
 		if ( ! check_admin_referer( 'wesender_save_settings' ) ) {
-			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-wp' ) );
+			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-e-mail' ) );
 		}
 
 		$from_email = sanitize_email( wp_unslash( $_POST['wesender_from_email'] ?? '' ) );
@@ -189,7 +189,7 @@ class Wesender_Admin {
 		}
 
 		if ( ! check_admin_referer( 'wesender_test_email' ) ) {
-			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-wp' ) );
+			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-e-mail' ) );
 		}
 
 		$to   = sanitize_email( wp_unslash( $_POST['wesender_test_to'] ?? get_option( 'admin_email' ) ) );
@@ -223,7 +223,7 @@ class Wesender_Admin {
 		}
 
 		if ( ! check_admin_referer( 'wesender_clear_log' ) ) {
-			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-wp' ) );
+			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-e-mail' ) );
 		}
 
 		Wesender_Log::clear();
@@ -244,7 +244,7 @@ class Wesender_Admin {
 		}
 
 		if ( ! check_admin_referer( 'wesender_block_toggle' ) ) {
-			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-wp' ) );
+			wp_die( esc_html__( 'Beveiligingscontrole mislukt.', 'wesender-e-mail' ) );
 		}
 
 		$source  = sanitize_text_field( wp_unslash( $_POST['wesender_source'] ?? '' ) );
@@ -831,7 +831,7 @@ class Wesender_Admin {
 		$plugins   = [];
 		foreach ( $installed as $plugin_file => $plugin_data ) {
 			$slug = dirname( $plugin_file );
-			if ( '.' === $slug || 'wesender-wp' === $slug ) {
+			if ( '.' === $slug || 'wesender-e-mail' === $slug ) {
 				continue;
 			}
 			$plugins[ $slug ] = $plugin_data['Name'];

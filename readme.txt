@@ -2,9 +2,9 @@
 Contributors: wesender
 Tags: mail, email, smtp, woocommerce, transactional
 Requires at least: 5.7
-Tested up to: 6.7
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.3.2
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,12 @@ Ja. Het afzenderdomein moet geverifieerd zijn in je Wesender-account met SPF, DK
 Zie de troubleshooting-sectie in de documentatie: docs.wesender.nl/apps/wordpress#probleemoplossing
 
 == Changelog ==
+
+= 1.4.0 =
+* Verwijderd: eigen update-mechanisme (WordPress.org levert updates via het officiele plugin-kanaal)
+* Fix: Text Domain bijgewerkt naar wesender-e-mail
+* Update: Tested up to WordPress 7.0
+
 
 = 1.3.2 =
 * Nieuw: automatische update-melding in WordPress (geen handmatige installatie meer nodig)
