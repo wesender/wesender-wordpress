@@ -200,12 +200,12 @@ class Wesender_Admin {
 			[ 'Content-Type: text/html; charset=UTF-8' ]
 		);
 
-		$this->set_notice(
-			$sent ? 'success' : 'error',
-			$sent
-				? "Test-e-mail verstuurd naar {$to}."
-				: 'Versturen mislukt. Controleer het PHP-errorlog voor details.'
-		);
+		if ( $sent ) {
+			$this->set_notice( 'success', "Test-e-mail verstuurd naar {$to}." );
+		} else {
+			$api_error = Wesender_Mailer::$last_error ?? 'Onbekende fout.';
+			$this->set_notice( 'error', 'Versturen mislukt: ' . $api_error );
+		}
 
 		wp_redirect( admin_url( 'admin.php?page=wesender' ) );
 		exit;

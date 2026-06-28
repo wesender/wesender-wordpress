@@ -5,6 +5,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Wesender_Mailer {
 
+	/** Last send error, available after wp_mail() returns false. */
+	public static ?string $last_error = null;
+
 	public function __construct() {
 		add_filter( 'pre_wp_mail', [ $this, 'send' ], 10, 2 );
 	}
@@ -12,9 +15,9 @@ class Wesender_Mailer {
 	/**
 	 * Intercept wp_mail() and route through Wesender.
 	 *
-	 * Returns true  → wp_mail returns true (sent by us).
-	 * Returns false → wp_mail returns false (blocked or failed).
-	 * Returns null  → wp_mail continues with its own SMTP send.
+	 * Returns true  -> wp_mail returns true (sent by us).
+	 * Returns false -> wp_mail returns false (blocked or failed).
+	 * Returns null  -> wp_mail continues with its own SMTP send.
 	 *
 	 * @param null|bool $return
 	 * @param array     $atts
@@ -80,9 +83,11 @@ class Wesender_Mailer {
 			$error = $result->get_error_message();
 			error_log( 'Wesender: verzenden mislukt - ' . $error );
 			Wesender_Log::record( $to, $subject, 'failed', $source, $error );
+			self::$last_error = $error;
 			return false;
 		}
 
+		self::$last_error = null;
 		Wesender_Log::record( $to, $subject, 'sent', $source );
 		return true;
 	}

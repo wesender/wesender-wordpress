@@ -3,7 +3,7 @@
  * Plugin Name:       Wesender e-mail
  * Plugin URI:        https://wesender.nl/apps/wordpress/
  * Description:       Stuur alle WordPress e-mails via Wesender. Verbind je account met een klik, geen SMTP-instellingen nodig.
- * Version:           1.3.1
+ * Version:           1.3.3
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            Wesender
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WESENDER_VERSION',    '1.3.2' );
+define( 'WESENDER_VERSION',    '1.3.3' );
 define( 'WESENDER_API_BASE',   'https://api.wesender.nl' );
 define( 'WESENDER_APP_URL',    'https://app.wesender.nl' );
 define( 'WESENDER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
