@@ -47,17 +47,17 @@ class Wesender_Log {
 
 	public static function get_entries( int $page = 1, int $per_page = 25 ): array {
 		global $wpdb;
-		$table  = $wpdb->prefix . 'wesender_log';
+		$table  = esc_sql( $wpdb->prefix . 'wesender_log' );
 		$offset = ( $page - 1 ) * $per_page;
 
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$rows  = $wpdb->get_results( $wpdb->prepare(
-			"SELECT * FROM `{$table}` ORDER BY sent_at DESC LIMIT %d OFFSET %d",
-			$per_page,
-			$offset
-		) );
-		$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$table}`" );
-		// phpcs:enable
+		$rows  = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->prepare(
+				"SELECT * FROM `{$table}` ORDER BY sent_at DESC LIMIT %d OFFSET %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$per_page,
+				$offset
+			)
+		);
+		$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		return [
 			'rows'  => $rows ?: [],

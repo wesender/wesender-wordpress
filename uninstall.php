@@ -11,4 +11,4 @@ delete_option( 'wesender_blocked_sources' );
 delete_option( 'wesender_log_db_version' );
 
 global $wpdb;
-$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}wesender_log`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}wesender_log`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery

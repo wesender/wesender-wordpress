@@ -3,7 +3,7 @@
  * Plugin Name:       Wesender e-mail
  * Plugin URI:        https://wesender.nl/apps/wordpress/
  * Description:       Stuur alle WordPress e-mails via Wesender. Verbind je account met een klik, geen SMTP-instellingen nodig.
- * Version:           1.4.0
+ * Version:           1.4.1
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            Wesender
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WESENDER_VERSION',    '1.4.0' );
+define( 'WESENDER_VERSION',    '1.4.1' );
 define( 'WESENDER_API_BASE',   'https://api.wesender.nl' );
 define( 'WESENDER_APP_URL',    'https://app.wesender.nl' );
 define( 'WESENDER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
@@ -91,20 +91,10 @@ function wesender_activate(): void {
 }
 
 function wesender_rmdir( string $dir ): void {
-	$items = @scandir( $dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
-	if ( ! $items ) {
-		return;
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	WP_Filesystem();
+	global $wp_filesystem;
+	if ( $wp_filesystem ) {
+		$wp_filesystem->rmdir( $dir, true );
 	}
-	foreach ( $items as $item ) {
-		if ( '.' === $item || '..' === $item ) {
-			continue;
-		}
-		$path = $dir . DIRECTORY_SEPARATOR . $item;
-		if ( is_dir( $path ) ) {
-			wesender_rmdir( $path );
-		} else {
-			@unlink( $path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
-		}
-	}
-	@rmdir( $dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
 }

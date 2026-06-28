@@ -81,7 +81,6 @@ class Wesender_Mailer {
 
 		if ( is_wp_error( $result ) ) {
 			$error = $result->get_error_message();
-			error_log( 'Wesender: verzenden mislukt - ' . $error );
 			Wesender_Log::record( $to, $subject, 'failed', $source, $error );
 			self::$last_error = $error;
 			return false;

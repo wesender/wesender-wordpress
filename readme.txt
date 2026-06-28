@@ -4,11 +4,11 @@ Tags: mail, email, smtp, woocommerce, transactional
 Requires at least: 5.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Stuur alle WordPress e-mails via Wesender. Verbind je account met een klik, geen SMTP-instellingen nodig.
+Send all WordPress emails via Wesender. Connect your account in one click, no SMTP configuration needed.
 
 == Description ==
 
@@ -57,6 +57,12 @@ Ja. Het afzenderdomein moet geverifieerd zijn in je Wesender-account met SPF, DK
 Zie de troubleshooting-sectie in de documentatie: docs.wesender.nl/apps/wordpress#probleemoplossing
 
 == Changelog ==
+
+= 1.4.1 =
+* Fix: gebruik WP_Filesystem voor verwijderen van mappen bij activatie
+* Fix: escaping van paginanummer en e-mailtelling in maillog
+* Fix: wp_safe_redirect() in plaats van wp_redirect()
+* Fix: foutmelding uit error_log() verwijderd
 
 = 1.4.0 =
 * Verwijderd: eigen update-mechanisme (WordPress.org levert updates via het officiele plugin-kanaal)

@@ -87,11 +87,12 @@ class Wesender_Admin {
 			'site'     => get_bloginfo( 'name' ),
 		] );
 
-		wp_redirect( $connect_url );
+		wp_safe_redirect( $connect_url );
 		exit;
 	}
 
 	public function handle_callback(): void {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- OAuth callback; security provided by state transient.
 		if (
 			! isset( $_GET['wesender_token'], $_GET['wesender_state'] ) ||
 			! current_user_can( 'manage_options' )
@@ -103,13 +104,14 @@ class Wesender_Admin {
 
 		if ( ! get_transient( 'wesender_state_' . $state ) ) {
 			$this->set_notice( 'error', 'Ongeldige verbindingssessie. Probeer opnieuw.' );
-			wp_redirect( admin_url( 'admin.php?page=wesender' ) );
+			wp_safe_redirect( admin_url( 'admin.php?page=wesender' ) );
 			exit;
 		}
 
 		delete_transient( 'wesender_state_' . $state );
 
 		$token = sanitize_text_field( wp_unslash( $_GET['wesender_token'] ) );
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		update_option( 'wesender_api_key', $token, false );
 
 		if ( ! get_option( 'wesender_from_email' ) ) {
@@ -117,7 +119,7 @@ class Wesender_Admin {
 		}
 
 		$this->set_notice( 'success', 'Verbonden met Wesender. Je kunt nu e-mails versturen via je account.' );
-		wp_redirect( admin_url( 'admin.php?page=wesender' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=wesender' ) );
 		exit;
 	}
 
@@ -141,7 +143,7 @@ class Wesender_Admin {
 		delete_option( 'wesender_from_name' );
 
 		$this->set_notice( 'info', 'Wesender-koppeling verbroken.' );
-		wp_redirect( admin_url( 'admin.php?page=wesender' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=wesender' ) );
 		exit;
 	}
 
@@ -165,7 +167,7 @@ class Wesender_Admin {
 
 		if ( ! $from_email ) {
 			$this->set_notice( 'error', 'Voer een geldig e-mailadres in als afzender.' );
-			wp_redirect( admin_url( 'admin.php?page=wesender' ) );
+			wp_safe_redirect( admin_url( 'admin.php?page=wesender' ) );
 			exit;
 		}
 
@@ -173,7 +175,7 @@ class Wesender_Admin {
 		update_option( 'wesender_from_name',  $from_name,  false );
 
 		$this->set_notice( 'success', 'Instellingen opgeslagen.' );
-		wp_redirect( admin_url( 'admin.php?page=wesender' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=wesender' ) );
 		exit;
 	}
 
@@ -207,7 +209,7 @@ class Wesender_Admin {
 			$this->set_notice( 'error', 'Versturen mislukt: ' . $api_error );
 		}
 
-		wp_redirect( admin_url( 'admin.php?page=wesender' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=wesender' ) );
 		exit;
 	}
 
@@ -228,7 +230,7 @@ class Wesender_Admin {
 
 		Wesender_Log::clear();
 		$this->set_notice( 'success', 'Maillog geleegd.' );
-		wp_redirect( admin_url( 'admin.php?page=wesender-maillog' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=wesender-maillog' ) );
 		exit;
 	}
 
@@ -260,7 +262,7 @@ class Wesender_Admin {
 		}
 
 		update_option( 'wesender_blocked_sources', $blocked, false );
-		wp_redirect( admin_url( 'admin.php?page=wesender-blokkeren' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=wesender-blokkeren' ) );
 		exit;
 	}
 
@@ -712,7 +714,7 @@ class Wesender_Admin {
 		}
 
 		$per_page = 30;
-		$page     = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
+		$page     = max( 1, absint( wp_unslash( $_GET['paged'] ?? 1 ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$data     = Wesender_Log::get_entries( $page, $per_page );
 		$rows     = $data['rows'];
 		$total    = $data['total'];
@@ -778,7 +780,7 @@ class Wesender_Admin {
 				<div style="padding:16px 16px;border-top:1px solid #f3f4f6;display:flex;justify-content:space-between;align-items:center">
 					<?php if ( $total > 0 ) : ?>
 						<div class="ws-pagination">
-							<span><?php printf( '%d van %d e-mails', count( $rows ) + ( $page - 1 ) * $per_page, $total ); ?></span>
+							<span><?php echo esc_html( sprintf( '%d van %d e-mails', absint( count( $rows ) + ( $page - 1 ) * $per_page ), absint( $total ) ) ); ?></span>
 							<span>
 							<?php for ( $i = 1; $i <= $pages; $i++ ) : ?>
 								<?php if ( $i === $page ) : ?>
