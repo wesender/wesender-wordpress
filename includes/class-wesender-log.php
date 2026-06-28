@@ -31,7 +31,7 @@ class Wesender_Log {
 
 	public static function record( array $to, string $subject, string $status, string $source = '', string $error = '' ): void {
 		global $wpdb;
-		$wpdb->insert(
+		$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$wpdb->prefix . 'wesender_log',
 			[
 				'sent_at'       => current_time( 'mysql' ),
@@ -57,7 +57,7 @@ class Wesender_Log {
 				$offset
 			)
 		);
-		$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		return [
 			'rows'  => $rows ?: [],
@@ -72,7 +72,7 @@ class Wesender_Log {
 
 	public static function get_sources(): array {
 		global $wpdb;
-		$results = $wpdb->get_col( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$results = $wpdb->get_col( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			"SELECT DISTINCT source FROM `{$wpdb->prefix}wesender_log` WHERE source != '' ORDER BY source ASC"
 		);
 		return $results ?: [];

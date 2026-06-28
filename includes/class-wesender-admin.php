@@ -889,7 +889,7 @@ class Wesender_Admin {
 				<?php
 				// Get mail counts per source from log.
 				global $wpdb;
-				$counts_raw = $wpdb->get_results( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				$counts_raw = $wpdb->get_results( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 					"SELECT source, COUNT(*) as cnt FROM `{$wpdb->prefix}wesender_log` GROUP BY source"
 				);
 				$counts = [];

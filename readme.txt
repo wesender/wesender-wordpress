@@ -4,7 +4,7 @@ Tags: mail, email, smtp, woocommerce, transactional
 Requires at least: 5.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,9 @@ Ja. Het afzenderdomein moet geverifieerd zijn in je Wesender-account met SPF, DK
 Zie de troubleshooting-sectie in de documentatie: docs.wesender.nl/apps/wordpress#probleemoplossing
 
 == Changelog ==
+
+= 1.4.2 =
+* Fix: ontbrekende phpcs:ignore comments voor DirectDatabaseQuery en SchemaChange
 
 = 1.4.1 =
 * Fix: gebruik WP_Filesystem voor verwijderen van mappen bij activatie
